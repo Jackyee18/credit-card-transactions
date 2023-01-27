@@ -4,6 +4,7 @@ WITH a(Card_type,amount_by_card_type) AS (SELECT Card_type, SUM(Amount) FROM cre
 SELECT a.Card_type, a.amount_by_card_type, CONCAT((CAST((ROUND((CAST(a.amount_by_card_type AS decimal(20,2)) / b.total_amount *100),2)) AS decimal(5,2))),'%') AS By_percent
 FROM a,b
 ORDER BY 2 DESC
+
 --- The proportion of Gender
 WITH a(Gender,amount_by_Gender) AS (SELECT Gender, SUM(CAST(Amount AS BIGINT)) FROM credit_card GROUP BY Gender),
 	b(total_amount) AS (SELECT SUM(CAST(amount_by_Gender AS BIGINT)) from a)
@@ -16,7 +17,7 @@ WITH a(Exp_Type,amount_by_Exp_Type) AS (SELECT Exp_Type, SUM(CAST(Amount AS BIGI
 SELECT a.Exp_Type, a.amount_by_Exp_Type, CONCAT((CAST((ROUND((CAST(a.amount_by_Exp_Type AS decimal(20,2)) / b.total_amount *100),2)) AS decimal(5,2))),'%') AS By_percent
 FROM a,b 
 ORDER BY 2 DESC
---- The different from last year
+--- The difference from last year
 WITH a(year,amount) AS (SELECT YEAR(DATE), Amount FROM credit_card),
 	b(year,amount_per_year) AS (SELECT year, SUM(CAST(amount AS bigint)) FROM a GROUP BY year),
 	c(year,amount_of_year,last_year) AS (SELECT year, amount_per_year, (LAG(amount_per_year) OVER (ORDER BY year)) FROM b)
