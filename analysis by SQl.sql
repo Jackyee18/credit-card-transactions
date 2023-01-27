@@ -4,7 +4,6 @@ WITH a(Card_type,amount_by_card_type) AS (SELECT Card_type, SUM(Amount) FROM cre
 SELECT a.Card_type, a.amount_by_card_type, CONCAT((CAST((ROUND((CAST(a.amount_by_card_type AS decimal(20,2)) / b.total_amount *100),2)) AS decimal(5,2))),'%') AS By_percent
 FROM a,b
 ORDER BY 2 DESC
-
 --- The proportion of Gender
 WITH a(Gender,amount_by_Gender) AS (SELECT Gender, SUM(CAST(Amount AS BIGINT)) FROM credit_card GROUP BY Gender),
 	b(total_amount) AS (SELECT SUM(CAST(amount_by_Gender AS BIGINT)) from a)
